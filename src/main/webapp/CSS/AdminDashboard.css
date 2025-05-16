@@ -1,0 +1,238 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F5F5F5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dashboard-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.content-area {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #F5F5F5;
+}
+
+.welcome-section h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #5C6BC0;
+    margin: 0 0 20px;
+}
+
+.dashboard-analytics h2,
+.program-levels h2,
+.events-section h2,
+.chart-section h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #5C6BC0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: #B3E5FC;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.stat-title {
+    font-size: 14px;
+    color: #78909C;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.program-levels {
+    background-color: #F3E5F5;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.level-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.level-card {
+    font-size: 16px;
+    color: #333;
+}
+
+.chart-section {
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    background-color: #EDE7F6;
+    border-radius: 8px;
+    padding: 20px;
+    height: 450px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container canvas {
+    height: 100% !important;
+    width: 100% !important;
+    max-height: 400px;
+}
+
+.events-section {
+    background-color: #FFE0B2;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.event-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.event-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #FFF8E1;
+    border-radius: 5px;
+}
+
+.event-name {
+    font-size: 16px;
+    color: #333;
+}
+
+.view-btn {
+    background-color: #A5D6A7;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.view-btn:hover {
+    background-color: #81C784;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #F5F5F5;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #EF5350;
+}
+
+#event-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #5C6BC0;
+    margin-bottom: 15px;
+}
+
+#event-details {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.notification {
+    color: #78909C;
+    font-style: italic;
+    font-size: 12px;
+}
+
+footer {
+    background-color: #EDE7F6;
+    padding: 10px 0;
+    text-align: center;
+    color: #5C6BC0;
+    font-size: 14px;
+    width: 100%;
+}
+
+footer a {
+    color: #5C6BC0;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+        height: 350px;
+    }
+
+    .chart-container canvas {
+        max-height: 300px;
+    }
+}

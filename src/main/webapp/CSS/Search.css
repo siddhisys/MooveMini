@@ -1,0 +1,95 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+.container {
+    display: flex;
+    padding: 20px;
+}
+.sidebar {
+    width: 25%;
+    padding-right: 20px;
+    position: sticky;
+    top: 20px;
+}
+.sidebar h2 {
+    color: #6a0dad;
+    font-size: 2em;
+}
+.video-card {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.video-card video {
+    width: 100%;
+    max-height: 300px; /* Adjust as needed */
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.video-card p {
+    color: #666;
+    font-size: 0.9em;
+}
+.main-content {
+    width: 75%;
+    padding: 20px;
+}
+.search-bar {
+    margin-bottom: 20px;
+}
+.search-bar input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.search-bar button.search-button {
+    padding: 10px 20px;
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.search-bar button.view-all {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.program-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+.program-card, .beginner-card {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+.program-card img, .beginner-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.program-card h3, .beginner-card h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+.program-card p, .beginner-card p {
+    color: #666;
+    font-size: 0.9em;
+}
+.highlight {
+    border: 2px solid #6a0dad;
+}

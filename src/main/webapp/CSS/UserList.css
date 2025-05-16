@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f9fb;
+    color: #2c3e50;
+}
+
+.user-list-container {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 30px 40px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.user-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.user-count {
+    text-align: center;
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 25px;
+}
+
+.user-count.empty {
+    color: #c0392b;
+    font-weight: 500;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fafafa;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.user-table thead {
+    background-color: #dfe8f1;
+    color: #2c3e50;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.user-table th,
+.user-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #ececec;
+}
+
+.user-table tbody tr:hover {
+    background-color: #f0f5fa;
+    transition: background-color 0.2s ease;
+}
+
+/* Gender Styling */
+.gender.male {
+    color: #3498db;
+    font-weight: 500;
+}
+
+.gender.female {
+    color: #e67eaf;
+    font-weight: 500;
+}
+
+.gender.other {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Status Styling */
+.status.active {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.status.inactive {
+    color: #95a5a6;
+    font-style: italic;
+}
+
+.status.suspended {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.status.activate {
+    color: #f39c12;
+    font-weight: 600;
+}

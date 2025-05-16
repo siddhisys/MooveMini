@@ -1,0 +1,148 @@
+body {
+    background-color: #f5f0f7;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1250px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.programs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.programs-header h1 {
+    font-size: 32px;
+    margin: 0;
+    font-weight: bold;
+    color: #000;
+}
+
+.btn-add {
+    background-color: #fff;
+    color: #333;
+    padding: 8px 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add:hover {
+    background-color: #f8f8f8;
+}
+
+.programs-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.program-card {
+    width: calc(33.33% - 20px);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Pastel colors for different program cards */
+.program-card:nth-child(3n+1) {
+    background-color: #ffebee; /* Light pink for Ballet */
+}
+
+.program-card:nth-child(3n+2) {
+    background-color: #e8f5e9; /* Light green for Hip-Hop */
+}
+
+.program-card:nth-child(3n+3) {
+    background-color: #e3f2fd; /* Light blue for Jazz */
+}
+
+.program-card:nth-child(3n+4) {
+    background-color: #fff8e1; /* Light yellow for Contemporary */
+}
+
+.program-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    color: #999;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.program-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.program-details {
+    padding: 20px;
+}
+
+.program-details h3 {
+    margin: 0 0 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.program-details p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.program-details p strong {
+    font-weight: normal;
+    display: inline-block;
+    width: 80px;
+}
+
+.edit-button-container {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.program-details .btn-edit {
+    background-color: transparent;
+    color: #333;
+    padding: 6px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.program-details .btn-edit:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Media queries for responsive design */
+@media (max-width: 1024px) {
+    .program-card {
+        width: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 768px) {
+    .program-card {
+        width: 100%;
+    }
+}

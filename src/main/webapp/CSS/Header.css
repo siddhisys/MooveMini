@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+/* General body styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f6f9;
+}
+
+/* Header container */
+.main-header {
+    background-color: #e6d9e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Left nav links */
+.header-left a {
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Playfair Display', serif;
+    color: #000;
+    text-decoration: none;
+    margin-right: 25px;
+    transition: color 0.3s ease;
+}
+
+.header-left a:hover {
+    color: red;
+}
+
+/* Center logo */
+.header-center .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: #2f2f2f;
+    letter-spacing: 5px;
+    margin-left: 100px;
+}
+
+/* Right header section */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Search form container */
+.search-form {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 0 12px;
+    height: 40px;
+}
+
+/* Search input */
+.search-form input[type="text"] {
+    border: none;
+    outline: none;
+    padding: 0 10px;
+    font-size: 14px;
+    width: 180px;
+    background-color: transparent;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Submit button (icon button) */
+.search-form button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-left: 5px;
+}
+
+/* Optional: add hover effect */
+.search-form button:hover {
+    color: #000;
+}
+
+/* Profile icon styling */
+.profile-icon i {
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+}

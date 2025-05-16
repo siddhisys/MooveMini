@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+body {
+    background-image: url('../resources/images/LandingPage/background.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'TT Common Pro Expanded', sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: #69443c;
+    padding: 110px;
+    font-family: 'The Seasons', serif;
+    font-size: 75px;
+    margin-bottom: 0px;
+    padding: 110px 40px 0px;
+}
+
+h4 {
+    text-align: center;
+    color: #69443c;
+    padding: 40px 20px 10px;
+    font-family: 'TT Common Pro Expanded', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 5px;
+}
+
+h5 {
+    text-align: center;
+    color: #69443c;
+    font-family: 'TT Common Pro Expanded', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 45px;
+    padding: 0;
+    line-height: 1.6;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 24px;
+    background-color: white;
+    border: none;
+    border-radius: 9999px;
+    font-weight: light;
+    color: #69443c;
+    font-family: 'TT Common Pro Expanded', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-transform: uppercase;
+	color: #69443c;
+	margin-top: 50px;
+	width: 155px;
+    
+}
+
+.social-icons {
+    text-align: center;
+    margin-top: -15px;
+    display: flex;
+    justify-content: center;
+    gap: 30px; 
+}
+
+
+.social-icons img {
+    width: 30px;
+    height: 30px;
+    margin-top: 70px;
+}

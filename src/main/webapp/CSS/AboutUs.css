@@ -1,0 +1,195 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #b5e0d9;
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 350px;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-family: 'Georgia', serif;
+    font-size: 3.5rem;
+    color: #2c4a45;
+    width: 55%;
+    line-height: 1.2;
+}
+
+.dancer-illustration {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45%;
+    max-width: 450px;
+}
+
+.dancer-illustration img {
+    width: 100%;
+    height: auto;
+}
+
+/* Foundational Ingredients Section */
+.ingredients-section {
+    background-color: #fff;
+    padding: 80px 0;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    padding: 0 20px;
+    background-color: #fff;
+}
+
+.founders-image {
+    flex: 1;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.founders-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none;
+    display: block;
+}
+
+.founders-story {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px 0;
+}
+
+.founders-story h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2.5rem;
+    color: #2c4a45;
+    margin-bottom: 20px;
+}
+
+.founders-story p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2c4a45;
+}
+
+/* Mission Section */
+.mission-section {
+    background-color: #f9f5f1;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.mission-section h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2.5rem;
+    color: #2c4a45;
+    margin-bottom: 60px;
+}
+
+.mission-values {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.mission-card {
+    flex: 1;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mission-icon {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 20px;
+}
+
+.mission-icon img {
+    width: 100%;
+    height: auto;
+}
+
+.mission-card h3 {
+    font-family: 'Georgia', serif;
+    font-size: 1.3rem;
+    color: #2c4a45;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .hero-content h1 {
+        width: 100%;
+        text-align: center;
+        font-size: 3rem;
+    }
+    
+    .dancer-illustration {
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        margin: 40px auto 0;
+        transform: none;
+    }
+    
+    .content-wrapper {
+        flex-direction: column;
+    }
+    
+    .founders-story {
+        text-align: center;
+    }
+    
+    .mission-values {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .mission-card {
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .founders-story h2,
+    .mission-section h2 {
+        font-size: 2rem;
+    }
+}
