@@ -12,31 +12,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-
 /**
- * LoginController is responsible for handling login requests for the Moove application.
- * It processes authentication and redirects users to appropriate pages.
+ * Handles user login requests.
+ * Processes authentication and manages session and cookie data.
+ * Redirects users to their respective dashboards upon successful login.
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/Login" })
 public class LoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final LoginService loginService;
 
-    /**
-     * Constructor initializes the LoginService.
-     */
+    // Initialize the LoginService
     public LoginController() {
         this.loginService = new LoginService();
     }
 
-    /**
-     * Handles GET requests to the login page.
-     *
-     * @param request  HttpServletRequest object
-     * @param response HttpServletResponse object
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
-     */
+    // Display the login page on GET request
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,15 +36,7 @@ public class LoginController extends HttpServlet {
         }
     }
 
-
-    /**
-     * Handles POST requests for user login.
-     *
-     * @param request  HttpServletRequest object
-     * @param response HttpServletResponse object
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
-     */
+    // Process login form submission on POST request
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
@@ -66,18 +49,18 @@ public class LoginController extends HttpServlet {
 
         if (loginStatus != null && loginStatus) {
             System.out.println("✅ Login successful for user: " + username);
-            
-            // Get complete user object with all profile data
+
+            // Retrieve full user profile data
             UsersModel completeUserData = loginService.getUserByUsername(username);
-            
-            // Set session attributes
+
+            // Create new session and store user info
             HttpSession session = req.getSession(true);
             session.setAttribute("username", username);
-            session.setAttribute("loggedInUser", completeUserData);  // Store the full user object
-            
-            // Set cookies
+            session.setAttribute("loggedInUser", completeUserData);
+
+            // Set cookies for username and role, expire in 30 minutes
             CookieUtil.addCookie(resp, "username", username, 60 * 30);
-            
+
             String role = "Student"; // Default role
             if ("admin".equalsIgnoreCase(username)) {
                 role = "Admin";
@@ -91,19 +74,11 @@ public class LoginController extends HttpServlet {
             }
         } else {
             System.out.println("❌ Login failed for user: " + username);
-            handleLoginFailure(req, resp, loginStatus); // only forward happens here
+            handleLoginFailure(req, resp, loginStatus);
         }
     }
 
-    /**
-     * Handles login failures by setting error messages and forwarding back to the login page.
-     *
-     * @param req         HttpServletRequest object
-     * @param resp        HttpServletResponse object
-     * @param loginStatus Boolean indicating the login status
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
-     */
+    // Handle login failure by setting error message and forwarding back to login page
     private void handleLoginFailure(HttpServletRequest req, HttpServletResponse resp, Boolean loginStatus)
             throws ServletException, IOException {
         String errorMessage;

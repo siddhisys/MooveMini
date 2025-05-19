@@ -6,17 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.moove.config.DbConfig;
 import com.moove.model.UsersModel;
-import com.moove.util.PasswordUtil;
 
 /**
- * Service class for handling user registration operations in the Moove application.
+ * Service class for handling user registration and profile-related operations in the Moove application.
  */
 public class RegisterService {
     private Connection dbConn;
     private boolean isConnectionError = false;
 
     /**
-     * Constructor initializes the database connection.
+     * Constructor initializes the database connection from DbConfig.
+     * If an error occurs, sets isConnectionError flag to true.
      */
     public RegisterService() {
         try {
@@ -28,21 +28,20 @@ public class RegisterService {
     }
 
     /**
-     * Registers a new user in the database.
+     * Registers a new user in the 'users' table.
+     * Assumes password is already encrypted before passing this method.
      *
-     * @param userModel the UserModel object containing user information
-     * @return true if registration is successful, false otherwise
+     * @param userModel the UsersModel object containing the user's data
+     * @return true if insertion is successful; false otherwise
      */
     public boolean registerUser(UsersModel userModel) {
         if (isConnectionError) {
             System.out.println("Database connection error during user registration!");
             return false;
         }
-        
-        // Password is already encrypted in the Controller, don't encrypt again
-        
+
         String query = "INSERT INTO users (User_Name, User_Email, password, User_Address, User_Status, User_Gender, image_path, Role_Id) " +
-                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
             stmt.setString(1, userModel.getUser_Name());
             stmt.setString(2, userModel.getUser_Email());
@@ -52,7 +51,7 @@ public class RegisterService {
             stmt.setString(6, userModel.getUser_Gender());
             stmt.setString(7, userModel.getImage_path());
             stmt.setInt(8, userModel.getRole_Id());
-            
+
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -62,10 +61,11 @@ public class RegisterService {
     }
 
     /**
-     * Updates an existing user's profile information in the database.
+     * Updates a user's profile information in the database.
+     * Conditionally updates image_path if it's provided.
      *
-     * @param userModel the UsersModel object containing updated user information
-     * @return true if the update is successful, false otherwise
+     * @param userModel the UsersModel object with updated information
+     * @return true if update was successful; false otherwise
      */
     public boolean updateUserProfile(UsersModel userModel) {
         if (isConnectionError) {
@@ -73,37 +73,33 @@ public class RegisterService {
             return false;
         }
 
-        // Encrypt the password before storing
-        String encryptedPassword = PasswordUtil.encrypt(userModel.getPassword(), userModel.getUser_Name());
-        
-        StringBuilder queryBuilder = new StringBuilder("UPDATE users SET User_Email = ?, password = ?, User_Address = ?");
-        
-        // Only include image_path in the query if it's not null
+        // Build SQL update query
+        StringBuilder queryBuilder = new StringBuilder("UPDATE users SET User_Name = ?, User_Email = ?, password = ?, User_Address = ?");
         if (userModel.getImage_path() != null && !userModel.getImage_path().isEmpty()) {
             queryBuilder.append(", image_path = ?");
         }
-        
-        queryBuilder.append(" WHERE User_Name = ?");
-        
+        queryBuilder.append(" WHERE User_ID = ?");
+
         try (PreparedStatement stmt = dbConn.prepareStatement(queryBuilder.toString())) {
-            stmt.setString(1, userModel.getUser_Email());
-            stmt.setString(2, encryptedPassword);
-            stmt.setString(3, userModel.getUser_Address());
-            
-            int paramIndex = 4;
-            
-            // Set image_path parameter if it exists
+            stmt.setString(1, userModel.getUser_Name());
+            stmt.setString(2, userModel.getUser_Email());
+            stmt.setString(3, userModel.getPassword());
+            stmt.setString(4, userModel.getUser_Address());
+
+            int paramIndex = 5;
+
+            // Conditionally add image_path
             if (userModel.getImage_path() != null && !userModel.getImage_path().isEmpty()) {
                 stmt.setString(paramIndex++, userModel.getImage_path());
             }
-            
-            stmt.setString(paramIndex, userModel.getUser_Name());
-            
+
+            stmt.setInt(paramIndex, userModel.getUser_ID());
+
             int rowsAffected = stmt.executeUpdate();
-            
+
             System.out.println("Profile update - Rows affected: " + rowsAffected);
             System.out.println("Profile update - SQL: " + queryBuilder.toString());
-            
+
             return rowsAffected > 0;
         } catch (SQLException e) {
             System.out.println("Error updating profile: " + e.getMessage());
@@ -113,10 +109,10 @@ public class RegisterService {
     }
 
     /**
-     * Checks if a username already exists in the database.
+     * Checks whether a given username already exists in the database.
      *
      * @param username the username to check
-     * @return true if the username exists, false otherwise
+     * @return true if username exists; false otherwise
      */
     public boolean usernameExists(String username) {
         if (isConnectionError) {
@@ -127,7 +123,6 @@ public class RegisterService {
         try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
             stmt.setString(1, username);
             ResultSet result = stmt.executeQuery();
-
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,10 +131,10 @@ public class RegisterService {
     }
 
     /**
-     * Checks if an email already exists in the database.
+     * Checks whether a given email address is already registered.
      *
-     * @param email the email to check
-     * @return true if the email exists, false otherwise
+     * @param email the email address to check
+     * @return true if email exists; false otherwise
      */
     public boolean emailExists(String email) {
         if (isConnectionError) {
@@ -150,7 +145,6 @@ public class RegisterService {
         try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
             stmt.setString(1, email);
             ResultSet result = stmt.executeQuery();
-
             return result.next();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -159,18 +153,16 @@ public class RegisterService {
     }
 
     /**
-     * Gets the role ID associated with the given role name from the database.
-     * 
-     * This method first queries the database for the role ID. If the role is not found
-     * in the database, it falls back to default IDs based on common role names.
+     * Retrieves the Role ID based on a role name from the 'roles' table.
+     * Falls back to hardcoded default values if the role is not found.
      *
-     * @param roleName The name of the role (Instructor, Student, Parent, Admin)
-     * @return The role ID from the database, or a default value if not found
+     * @param roleName the name of the role (e.g., "admin", "student")
+     * @return the role ID; returns 0 if role not found or error occurs
      */
     public int getRoleIdByName(String roleName) {
         if (isConnectionError) {
             System.out.println("Database connection error while getting role ID!");
-            return 0; // Return default role ID in case of connection error
+            return 0;
         }
 
         String query = "SELECT Role_Id FROM roles WHERE Role_Name = ?";
@@ -182,25 +174,69 @@ public class RegisterService {
                 return result.getInt("Role_Id");
             } else {
                 System.out.println("Role not found: " + roleName);
-                // Return default role ID if role not found
-                // You might want to define constants for your role IDs
+                // Fallback to default hardcoded role IDs
                 switch (roleName.toLowerCase()) {
-                    case "admin":
-                        return 1;
-                    case "instructor":
-                        return 2;
-                    case "student":
-                        return 3;
-                    case "parent":
-                        return 4;
-                    default:
-                        return 0;
+                    case "admin": return 1;
+                    case "instructor": return 2;
+                    case "student": return 3;
+                    case "parent": return 4;
+                    default: return 0;
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving role ID: " + e.getMessage());
             e.printStackTrace();
-            return 0; // Return default role ID in case of SQL error
+            return 0;
+        }
+    }
+
+    /**
+     * Deletes a user from the database based on their user ID.
+     * Ensures transactional safety by using commit and rollback.
+     *
+     * @param userId the ID of the user to delete
+     * @return true if the user was successfully deleted; false otherwise
+     */
+    public boolean deleteUser(int userId) {
+        if (isConnectionError) {
+            System.out.println("Database connection error during user deletion!");
+            return false;
+        }
+
+        try {
+            System.out.println("Setting autoCommit to false");
+            dbConn.setAutoCommit(false);
+
+            // Delete user entry
+            String deleteUserQuery = "DELETE FROM users WHERE User_ID = ?";
+            try (PreparedStatement stmt = dbConn.prepareStatement(deleteUserQuery)) {
+                stmt.setInt(1, userId);
+                int rowsAffected = stmt.executeUpdate();
+                System.out.println("User deletion - Rows affected: " + rowsAffected);
+
+                if (rowsAffected > 0) {
+                    dbConn.commit();
+                    return true;
+                } else {
+                    dbConn.rollback();
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error deleting user: " + e.getMessage());
+            e.printStackTrace();
+            try {
+                dbConn.rollback();
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            return false;
+        } finally {
+            try {
+                dbConn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

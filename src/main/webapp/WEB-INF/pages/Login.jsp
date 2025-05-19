@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,16 +44,20 @@ Sign in with FaceBook
 <button type="submit" class="login-btn">LOG IN</button>
 
 <div class="forgotpw-link">
-<a href="${pageContext.request.contextPath}/login">Forgot Password?</a>
+<a href="${pageContext.request.contextPath}/forgot-password">Forgot Password?</a>
 </div>
 
-<% if (request.getAttribute("success") != null) { %>
+<% if ("loggedOut".equals(request.getParameter("message"))) { %>
 <div style="color: green; text-align: center; margin-top: 15px;">
-<%= request.getAttribute("success") %>
+    You have been logged out successfully.
+</div>
+<% } else if (request.getAttribute("success") != null) { %>
+<div style="color: green; text-align: center; margin-top: 15px;">
+    <%= request.getAttribute("success") %>
 </div>
 <% } else if (request.getAttribute("error") != null) { %>
 <div style="color: red; text-align: center; margin-top: 15px;">
-<%= request.getAttribute("error") %>
+    <%= request.getAttribute("error") %>
 </div>
 <% } %>
 
@@ -62,7 +65,7 @@ Sign in with FaceBook
 </div>
 </div>
 
-<a href="${pageContext.request.contextPath}/Register" class="back-btn">&lt;</a>
+<a href="${pageContext.request.contextPath}/Register" class="back-btn"><</a>
 </div>
 </body>
 </html>

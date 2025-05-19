@@ -7,18 +7,19 @@ body {
     background-color: #f8f6f9;
 }
 
-/* Header container */
 .main-header {
     background-color: #e6d9e8;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
+    padding: 25px 40px;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* important for absolute centering */
 }
+
 
 /* Left nav links */
 .header-left a {
@@ -35,20 +36,27 @@ body {
     color: red;
 }
 
-/* Center logo */
 .header-center .logo {
     font-family: 'Playfair Display', serif;
     font-size: 36px;
     color: #2f2f2f;
     letter-spacing: 5px;
-    margin-left: 100px;
+    text-align: center;
 }
+
 
 /* Right header section */
 .header-right {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+/* Center logo properly regardless of left/right widths */
+.header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Search form container */
@@ -99,3 +107,5 @@ body {
     color: #333;
     cursor: pointer;
 }
+
+

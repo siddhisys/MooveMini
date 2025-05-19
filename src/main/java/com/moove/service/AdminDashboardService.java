@@ -10,23 +10,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Service class to provide statistics and dashboard data for the admin panel.
+ */
 public class AdminDashboardService {
     private ProgramDAO programDAO;
     private UserDAO userDAO;
     private Connection conn;
 
+    /**
+     * Constructor that initializes the service with a database connection
+     * and sets up DAOs for accessing program and user data.
+     * 
+     * @param conn Active database connection.
+     */
     public AdminDashboardService(Connection conn) {
         this.conn = conn;
         this.programDAO = new ProgramDAO(conn);
         this.userDAO = new UserDAO(conn);
     }
 
+    /**
+     * Gathers key statistics for display on the admin dashboard, such as:
+     * - Total number of programs
+     * - Program level distribution (beginner, intermediate, advanced)
+     * - Total number of students and instructors
+     * - User status distribution (e.g., active, inactive)
+     * 
+     * @return A map containing all the dashboard stats.
+     */
     public Map<String, Object> getDashboardStats() {
         Map<String, Object> stats = new HashMap<>();
+
         try {
-            // Total Programs and Program Levels
+            // Retrieve all programs
             List<ProgramModel> programs = programDAO.getAllPrograms();
             stats.put("totalPrograms", programs.size());
+
+            // Categorize programs by their level (case-insensitive)
             Map<String, Integer> programLevels = new HashMap<>();
             programLevels.put("beginner", (int) programs.stream()
                     .filter(p -> p != null && p.getProgram_Level() != null && 
@@ -43,17 +64,18 @@ public class AdminDashboardService {
             stats.put("programLevels", programLevels);
             System.out.println("Program Levels: " + programLevels);
 
-            // Total Students and Instructors
+            // Count users by role
             stats.put("totalStudents", userDAO.countUsersByRole("Student"));
             stats.put("totalInstructors", userDAO.countUsersByRole("Instructor"));
             System.out.println("Total Students: " + stats.get("totalStudents") + ", Total Instructors: " + stats.get("totalInstructors"));
 
-            // User Distribution
+            // Get user status distribution (e.g., active, inactive, pending)
             Map<String, Integer> activeUsers = userDAO.countUserStatus();
             stats.put("activeUsers", activeUsers != null ? activeUsers : new HashMap<>());
             System.out.println("Active Users: " + stats.get("activeUsers"));
 
         } catch (SQLException e) {
+            // In case of an error, log the exception and return empty/default values
             System.err.println("Error in getDashboardStats: " + e.getMessage());
             e.printStackTrace();
             stats.put("totalPrograms", 0);
@@ -62,9 +84,15 @@ public class AdminDashboardService {
             stats.put("programLevels", new HashMap<>());
             stats.put("activeUsers", new HashMap<>());
         }
+
         return stats;
     }
 
+    /**
+     * Returns a list of mock event data to display on the admin dashboard.
+     * 
+     * @return List of events with name and details.
+     */
     public List<Map<String, String>> getEvents() {
         return List.of(
             Map.of("name", "Summer Gala 2025", "details", "Date - May 15, 2025, Location - Moove Hall"),
@@ -72,6 +100,10 @@ public class AdminDashboardService {
         );
     }
 
+    /**
+     * Closes the database connection if it's open. 
+     * Should be called when the service is no longer needed.
+     */
     public void closeConnection() {
         if (conn != null) {
             try {

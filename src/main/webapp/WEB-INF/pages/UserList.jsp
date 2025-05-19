@@ -3,15 +3,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/Header.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/Footer.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/UserList.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/Header.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/Footer.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/UserList.css">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User List</title>
-
 </head>
 <body>
 <jsp:include page="Header.jsp"/>
@@ -36,6 +34,7 @@
                     <th>Email</th>
                     <th>Gender</th>
                     <th>Status</th>
+                    <th>Enrolled Program</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +46,9 @@
                         <td>${user.user_Email}</td>
                         <td class="gender ${user.user_Gender.toLowerCase()}">${user.user_Gender}</td>
                         <td class="status ${user.user_Status.toLowerCase()}">${user.user_Status}</td>
+                        <td class="enrolled-program ${userProgramMap[user.user_ID] == 'None' ? 'none' : ''}">
+                            ${userProgramMap[user.user_ID]}
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>

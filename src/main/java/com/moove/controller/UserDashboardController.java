@@ -17,40 +17,40 @@ public class UserDashboardController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      * Handles GET requests for the user dashboard and forwards to the JSP page
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        // Get the user information from session
+        // Get the existing session, do not create a new one if it doesn't exist
         HttpSession session = request.getSession(false);
         
-        // If session exists, forward to dashboard page
+        // Check if session exists and contains a "username" attribute (user is logged in)
         if (session != null && session.getAttribute("username") != null) {
+            // Retrieve user details from session
             String username = (String) session.getAttribute("username");
             String role = (String) session.getAttribute("role");
             
-            // Add user info to request attributes for use in JSP
+            // Set user details as request attributes to be used in the JSP page
             request.setAttribute("username", username);
             request.setAttribute("role", role);
             
-            // Forward to the dashboard JSP page
+            // Forward the request to the UserDashboard JSP page to display user info
             request.getRequestDispatcher("/WEB-INF/pages/UserDashboard.jsp").forward(request, response);
         } else {
-            // If no session or no username in session, redirect to login
+            // If session does not exist or user is not logged in, redirect to Login page
             response.sendRedirect(request.getContextPath() + "/Login");
         }
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     * Processes POST requests by redirecting to doGet
+     * Processes POST requests by forwarding them to doGet method
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        // Redirect POST request handling to doGet for simplicity
         doGet(request, response);
     }
 }

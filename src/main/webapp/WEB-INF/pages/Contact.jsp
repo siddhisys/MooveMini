@@ -37,8 +37,8 @@
             <label for="enquiry">Type of Inquiry</label>
             <select id="enquiry" name="enquiry" required>
                 <option value="">-- Please Select --</option>
-                <option value="order">Order-Related Issue</option>
-                <option value="product">Product Information</option>
+                <option value="enrollment">Enrollment-Related Issue</option>
+                <option value="feedback">Feedback</option>
                 <option value="general">General Inquiry</option>
             </select>
         </div>

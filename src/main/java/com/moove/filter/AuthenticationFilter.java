@@ -4,9 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Cookie;
-
-import com.moove.util.CookieUtil;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -21,6 +19,7 @@ public class AuthenticationFilter implements Filter {
     private static final String USERLIST = "/UserList";
     private static final String PROGRAMLIST = "/programlist";
     private static final String USERPROFILE = "/profile";
+    private static final String USERPROFILE_DELETE = "/profile/delete"; 
     private static final String USERDASHBOARD = "/UserDashboard";
     private static final String CONTACT = "/contact";
     private static final String SEARCH = "/SearchController";
@@ -30,7 +29,8 @@ public class AuthenticationFilter implements Filter {
     private static final String EDITPROGRAM = "/EditProgram";
     private static final String DELETEPROGRAM = "/DeleteProgram";
     private static final String LISTPROGRAM = "/ListPrograms";
-    
+    private static final String ENROLLMENT = "/EnrollmentController";
+    private static final String LOGOUT = "/Logout";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -62,45 +62,48 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        // Get login state and role from cookies
-        Cookie usernameCookie = CookieUtil.getCookie(req, "username");
-        Cookie roleCookie = CookieUtil.getCookie(req, "role");
-        
-        boolean isLoggedIn = usernameCookie != null;
-        String role = roleCookie != null ? roleCookie.getValue() : null;
-
-        // For debugging
-        System.out.println("Auth Filter - Is logged in: " + isLoggedIn);
-        System.out.println("Auth Filter - Role: " + role);
-        System.out.println("Auth Filter - Normalized URI: " + uri);
-
-        // Always allow access to login, register, and root pages
-        if (uri.equals(LOGIN) || uri.equals(REGISTER) || uri.equals(ROOT) || uri.equals("")) {
+        // Always allow access to login, register, logout, and root pages
+        if (uri.equals(LOGIN) || uri.equals(REGISTER) || uri.equals(ROOT) || uri.equals("") || uri.equals(LOGOUT)) {
             chain.doFilter(request, response);
             return;
         }
 
+        // Check session for logged-in state
+        HttpSession session = req.getSession(false);
+        boolean isLoggedIn = session != null && session.getAttribute("loggedInUser") != null;
+        String role = session != null ? (String) session.getAttribute("role") : null;
+
+        // For debugging
+        System.out.println("Auth Filter - Is logged in (session): " + isLoggedIn);
+        System.out.println("Auth Filter - Role (session): " + role);
+        System.out.println("Auth Filter - Normalized URI: " + uri);
+
         // Admin role logic
-        if ("Admin".equalsIgnoreCase(role)) {
+        if (isLoggedIn && "Admin".equalsIgnoreCase(role)) {
             if (uri.equals(ADMINDASHBOARD) || uri.equals(USERLIST) || uri.equals(PROGRAMLIST)
-                    || uri.equals(USERPROFILE) || uri.equals(HOME) || uri.equals(ADDPROGRAM) || uri.equals(GETPROGRAM) || uri.equals(EDITPROGRAM)
-                    || uri.equals(DELETEPROGRAM) || uri.equals(LISTPROGRAM)) {
+                    || uri.equals(USERPROFILE) || uri.equals(HOME) || uri.equals(ADDPROGRAM) 
+                    || uri.equals(GETPROGRAM) || uri.equals(EDITPROGRAM) || uri.equals(DELETEPROGRAM) 
+                    || uri.equals(LISTPROGRAM) || uri.equals(LOGOUT)) {
                 chain.doFilter(request, response);
             } else {
+                System.out.println("Auth Filter - Admin user, redirecting to AdminDashboard");
                 res.sendRedirect(contextPath + ADMINDASHBOARD);
             }
         }
         // Other logged-in users
-        else if ("Student".equalsIgnoreCase(role) || "Instructor".equalsIgnoreCase(role) || "Parent".equalsIgnoreCase(role)) {
+        else if (isLoggedIn && ("Student".equalsIgnoreCase(role) || "Instructor".equalsIgnoreCase(role) || "Parent".equalsIgnoreCase(role))) {
             if (uri.equals(USERDASHBOARD) || uri.equals(HOME) || uri.equals(ABOUT) 
-                    || uri.equals(SEARCH) || uri.equals(CONTACT) || uri.equals(USERPROFILE)) {
+                    || uri.equals(SEARCH) || uri.equals(CONTACT) || uri.equals(USERPROFILE) 
+                    || uri.equals(USERPROFILE_DELETE) || uri.equals(ENROLLMENT) || uri.equals(LOGOUT)) {
                 chain.doFilter(request, response);
             } else {
+                System.out.println("Auth Filter - Non-Admin user, redirecting to UserDashboard");
                 res.sendRedirect(contextPath + USERDASHBOARD);
             }
         }
         // Not logged in
         else {
+            System.out.println("Auth Filter - Not logged in, redirecting to Login");
             res.sendRedirect(contextPath + LOGIN);
         }
     }
